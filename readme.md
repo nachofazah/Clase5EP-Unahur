@@ -1,4 +1,11 @@
-## .env de ejemplo
+## 1 - Instalacion del proyecto
+```
+> git clone git@github.com:tomas0011/Clase5EP-Unahur.git
+> cd Clase5EP-Unahur
+> npm i
+```
+
+## 2 - .env de ejemplo
 ```
 NODE_ENV=dev
 PORT=3001
@@ -8,6 +15,13 @@ sequelize_username=user_name
 sequelize_password=user_password
 sequelize_dialect=database_dialect (mysql | mariadb | posgres)
 sequelize_host=localhost
+```
+
+## 3 - Prueba del proyecto
+
+```
+> cd /api
+> npm run start
 ```
 
 ## Creacion de .env
