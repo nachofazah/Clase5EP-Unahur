@@ -1,6 +1,6 @@
 ## 1 - Instalacion del proyecto
 ```
-> git clone git@github.com:tomas0011/Clase5EP-Unahur.git
+> git clone https://<token>@github.com/tomas0011/Clase5EP-Unahur
 > cd Clase5EP-Unahur
 > npm i
 ```
