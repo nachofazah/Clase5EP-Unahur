@@ -15,7 +15,7 @@ router.post("/", (req, res) => {
   models.materia
     .create({
       nombre: req.body.nombre,
-      nombre: req.body.id_carrera
+      id_carrera: req.body.id_carrera
     })
     .then(materia => res.status(201).send({ id: materia.id }))
     .catch(error => {
