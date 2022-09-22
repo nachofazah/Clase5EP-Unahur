@@ -12,14 +12,26 @@ router.get("/", (req, res) => {
 });
 
 router.get("/materias", (req, res) => {
+  const { query: { skip = 0, limit = 1 } } = req;
   models.carrera
     .findAll({
       attributes: ["id", "nombre"],
       include: [{
         model: models.materia, attributes: ["id", "nombre", "id_carrera"]
-      }]
+      }],
+      offset: Number(skip),
+      limit: Number(limit)
     })
-    .then(carreras => res.send(carreras))
+    .then((carreras) => {
+      return models.carrera.count()
+        .then((count) => ({
+          totalDeCarreras: count,
+          skip: Number(skip),
+          limit: Number(limit),
+          carreras
+        }))
+    })
+    .then(carrerasData => res.send(carrerasData))
     .catch((error) => {
       console.log(error)
       res.sendStatus(500)
