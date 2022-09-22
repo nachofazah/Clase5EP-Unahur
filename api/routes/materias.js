@@ -8,10 +8,7 @@ router.get("/", (req, res) => {
       attributes: ["id", "nombre", "id_carrera"]
     })
     .then(materias => res.send(materias))
-    .catch((error) => {
-      console.log(error)
-      return res.sendStatus(500)
-    });
+    .catch(() => res.sendStatus(500));
 });
 
 router.post("/", (req, res) => {
