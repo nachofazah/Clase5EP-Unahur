@@ -22,20 +22,16 @@ router.get("/materias", (req, res) => {
       offset: Number(skip),
       limit: Number(limit)
     })
-    .then((carreras) => {
-      return models.carrera.count()
-        .then((count) => ({
-          totalDeCarreras: count,
-          skip: Number(skip),
-          limit: Number(limit),
-          carreras
-        }))
-    })
-    .then(carrerasData => res.send(carrerasData))
-    .catch((error) => {
-      console.log(error)
-      res.sendStatus(500)
-    });
+    .then((carreras) => models.carrera.count()
+      .then((count) => ({
+        totalDeCarreras: count,
+        skip: Number(skip),
+        limit: Number(limit),
+        carreras
+      }))
+    )
+    .then((carrerasData) => res.send(carrerasData))
+    .catch(() => res.sendStatus(500));
 });
 
 router.post("/", (req, res) => {
