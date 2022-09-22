@@ -4,5 +4,10 @@ module.exports = (sequelize, DataTypes) => {
     nombre: DataTypes.STRING,
     id_carrera: DataTypes.INTEGER
   }, {});
+
+  materia.associate = (models) => {
+    materia.belongsToMany(models.carrera, { through: "carreraMateria" });
+  }
+
   return materia;
 };
