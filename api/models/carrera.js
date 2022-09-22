@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   carrera.associate = (models) => {
-    carrera.belongsToMany(models.materia, { through: "carreraMateria",  });
+    carrera.hasMany(models.materia, { foreignKey: 'id_carrera' });
   }
 
   return carrera;

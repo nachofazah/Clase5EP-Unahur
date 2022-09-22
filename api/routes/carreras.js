@@ -3,13 +3,27 @@ var router = express.Router();
 var models = require("../models");
 
 router.get("/", (req, res) => {
-  console.log("Esto es un mensaje para ver en consola");
   models.carrera
     .findAll({
       attributes: ["id", "nombre"]
     })
     .then(carreras => res.send(carreras))
     .catch(() => res.sendStatus(500));
+});
+
+router.get("/materias", (req, res) => {
+  models.carrera
+    .findAll({
+      attributes: ["id", "nombre"],
+      include: [{
+        model: models.materia, attributes: ["id", "nombre", "id_carrera"]
+      }]
+    })
+    .then(carreras => res.send(carreras))
+    .catch((error) => {
+      console.log(error)
+      res.sendStatus(500)
+    });
 });
 
 router.post("/", (req, res) => {
