@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "toor",
-    "database": "epersistencias",
+    "password": "061194",
+    "database": "epClase5",
     "host": "localhost",
     "dialect": "mysql",
     "operatorsAliases": 0
