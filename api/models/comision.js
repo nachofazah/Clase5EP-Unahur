@@ -4,8 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     nombre: DataTypes.STRING,
     id_materia: DataTypes.INTEGER
   }, {});
-  comision.associate = function(models) {
-    // associations can be defined here
-  };
+  comision.associate = (models) => {
+    comision.belongsTo(models.materia, { foreignKey: 'id_materia' });
+  }
   return comision;
 };
