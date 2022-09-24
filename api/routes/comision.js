@@ -74,7 +74,7 @@ router.delete("/:id", (req, res) => {
       .destroy()
       .then(() => res.sendStatus(200))
       .catch(() => res.sendStatus(500));
-    findcomision(req.params.id, {
+    findComision(req.params.id, {
       onSuccess,
       onNotFound: () => res.sendStatus(404),
       onError: () => res.sendStatus(500)
