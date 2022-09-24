@@ -11,6 +11,34 @@ router.get("/", (req, res) => {
     .catch(() => res.sendStatus(500));
 });
 
+
+router.get("/data", (req, res) => {
+  const { query: { skip = 0, limit = 1 } } = req;
+  models.materia
+    .findAll({
+      attributes: ["id", "nombre", "id_carrera", "id_profesor"],
+      include: [/*{
+        model: models.carrera, attributes: ["id", "nombre"]
+      },*/
+      {
+        model: models.profesor, attributes: ["id", "nombre"]
+      }],
+      offset: Number(skip),
+      limit: Number(limit)
+    })
+    .then((carreras) => models.carrera.count()
+      .then((count) => ({
+        totalDeCarreras: count,
+        skip: Number(skip),
+        limit: Number(limit),
+        carreras
+      }))
+    )
+    .then((carrerasData) => res.send(carrerasData))
+    .catch((err) => res.sendStatus(500));
+});
+
+
 router.post("/", (req, res) => {
   console.log(req.body);
   models.materia
@@ -82,5 +110,7 @@ router.delete("/:id", (req, res) => {
       onError: () => res.sendStatus(500)
     });
 });
+
+
 
 module.exports = router;
