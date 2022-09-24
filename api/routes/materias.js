@@ -5,17 +5,19 @@ var models = require("../models");
 router.get("/", (req, res) => {
   models.materia
     .findAll({
-      attributes: ["id", "nombre", "id_carrera"]
+      attributes: ["id", "nombre", "id_carrera", "id_profesor"]
     })
     .then(materias => res.send(materias))
     .catch(() => res.sendStatus(500));
 });
 
 router.post("/", (req, res) => {
+  console.log(req.body);
   models.materia
     .create({
       nombre: req.body.nombre,
-      nombre: req.body.id_carrera
+      id_carrera: req.body.id_carrera,
+      id_profesor: req.body.id_profesor
     })
     .then(materia => res.status(201).send({ id: materia.id }))
     .catch(error => {
@@ -32,7 +34,7 @@ router.post("/", (req, res) => {
 const findMateria = (id, { onSuccess, onNotFound, onError }) => {
   models.materia
     .findOne({
-      attributes: ["id", "nombre", "id_carrera"],
+      attributes: ["id", "nombre", "id_carrera", "id_profesor"],
       where: { id }
     })
     .then(materia => (materia ? onSuccess(materia) : onNotFound()))

@@ -9,7 +9,10 @@ router.get("/", (req, res) => {
       attributes: ["id", "nombre"]
     })
     .then(carreras => res.send(carreras))
-    .catch(() => res.sendStatus(500));
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(500)
+    });
 });
 
 router.post("/", (req, res) => {

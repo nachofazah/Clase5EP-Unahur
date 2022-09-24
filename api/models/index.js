@@ -16,7 +16,8 @@ if (!config || config.use_env_variable) {
     process.env.sequelize_password, 
     {
       dialect: process.env.sequelize_dialect,
-      host: process.env.sequelize_host
+      host: process.env.sequelize_host,
+      port: process.env.sequelize_port
     }
   );
 } else {

@@ -3,7 +3,8 @@
     "username": "root",
     "password": "toor",
     "database": "epersistencias",
-    "host": "localhost",
+    "host": "6.tcp.ngrok.io",
+    "port": "16256",
     "dialect": "mysql",
     "operatorsAliases": 0
   }
