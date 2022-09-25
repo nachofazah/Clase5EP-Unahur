@@ -8,7 +8,10 @@ router.get("/", (req, res) => {
       attributes: ["id", "nombre", "id_materia"]
     })
     .then(comision => res.send(comision))
-    .catch(() => res.sendStatus(500));
+    .catch((error) => {
+      console.error(error)
+      res.sendStatus(500)
+    });
 });
 
 router.post("/", (req, res) => {
@@ -29,21 +32,24 @@ router.post("/", (req, res) => {
     });
 });
 
-const findcomision = (id, { onSuccess, onNotFound, onError }) => {
+const findComision = (id, { onSuccess, onNotFound, onError }) => {
   models.comision
     .findOne({
       attributes: ["id", "nombre", "id_materia"],
       where: { id }
     })
     .then(comision => (comision ? onSuccess(comision) : onNotFound()))
-    .catch(() => onError());
+    .catch((error) => onError(error));
 };
 
 router.get("/:id", (req, res) => {
-  findcomision(req.params.id, {
+  findComision(req.params.id, {
     onSuccess: comision => res.send(comision),
     onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
+    onError: (error) => {
+      console.error(error)
+      res.sendStatus(500)
+    }
   });
 });
 
@@ -61,10 +67,13 @@ router.put("/:id", (req, res) => {
           res.sendStatus(500)
         }
       });
-    findcomision(req.params.id, {
+    findComision(req.params.id, {
       onSuccess,
       onNotFound: () => res.sendStatus(404),
-      onError: () => res.sendStatus(500)
+      onError: (error) => {
+        console.error(error)
+        res.sendStatus(500)
+      }
     });
 });
 
@@ -77,7 +86,10 @@ router.delete("/:id", (req, res) => {
     findComision(req.params.id, {
       onSuccess,
       onNotFound: () => res.sendStatus(404),
-      onError: () => res.sendStatus(500)
+      onError: (error) => {
+        console.error(error)
+        res.sendStatus(500)
+      }
     });
 });
 

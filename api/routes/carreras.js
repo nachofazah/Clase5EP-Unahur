@@ -8,8 +8,8 @@ router.get("/", (req, res) => {
       attributes: ["id", "nombre"]
     })
     .then(carreras => res.send(carreras))
-    .catch((err) => {
-      console.log(err);
+    .catch((error) => {
+      console.error(error);
       res.sendStatus(500)
     });
 });
@@ -34,7 +34,10 @@ router.get("/materias", (req, res) => {
       }))
     )
     .then((carrerasData) => res.send(carrerasData))
-    .catch(() => res.sendStatus(500));
+    .catch((error) => {
+      console.error(error)
+      res.sendStatus(500)
+    });
 });
 
 router.post("/", (req, res) => {
@@ -59,14 +62,17 @@ const findCarrera = (id, { onSuccess, onNotFound, onError }) => {
       where: { id }
     })
     .then(carrera => (carrera ? onSuccess(carrera) : onNotFound()))
-    .catch(() => onError());
+    .catch((error) => onError(error));
 };
 
 router.get("/:id", (req, res) => {
   findCarrera(req.params.id, {
     onSuccess: carrera => res.send(carrera),
     onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
+    onError: (error) => {
+      console.error(error)
+      res.sendStatus(500)
+    }
   });
 });
 
@@ -87,7 +93,10 @@ router.put("/:id", (req, res) => {
     findCarrera(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
+    onError: (error) => {
+      console.error(error)
+      res.sendStatus(500)
+    }
   });
 });
 
@@ -100,7 +109,10 @@ router.delete("/:id", (req, res) => {
   findCarrera(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
+    onError: (error) => {
+      console.error(error)
+      res.sendStatus(500)
+    }
   });
 });
 

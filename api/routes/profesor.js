@@ -9,7 +9,10 @@ router.get("/", (req, res) => {
       attributes: ["id", "nombre"]
     })
     .then(profesor => res.send(profesor))
-    .catch(() => res.sendStatus(500));
+    .catch((error) => {
+      console.error(error)
+      res.sendStatus(500)
+    });
 });
 
 router.post("/", (req, res) => {
@@ -34,14 +37,17 @@ const findProfesor = (id, { onSuccess, onNotFound, onError }) => {
       where: { id }
     })
     .then(profesor => (profesor ? onSuccess(profesor) : onNotFound()))
-    .catch(() => onError());
+    .catch((error) => onError(error));
 };
 
 router.get("/:id", (req, res) => {
   findProfesor(req.params.id, {
     onSuccess: profesor => res.send(profesor),
     onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
+    onError: (error) => {
+      console.error(error)
+      res.sendStatus(500)
+    }
   });
 });
 
@@ -62,7 +68,10 @@ router.put("/:id", (req, res) => {
     findProfesor(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
+    onError: (error) => {
+      console.error(error)
+      res.sendStatus(500)
+    }
   });
 });
 
@@ -75,7 +84,10 @@ router.delete("/:id", (req, res) => {
   findProfesor(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
+    onError: (error) => {
+      console.error(error)
+      res.sendStatus(500)
+    }
   });
 });
 
