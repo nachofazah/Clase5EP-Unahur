@@ -5,17 +5,47 @@ var models = require("../models");
 router.get("/", (req, res) => {
   models.materia
     .findAll({
-      attributes: ["id", "nombre", "id_carrera"]
+      attributes: ["id", "nombre", "id_carrera", "id_profesor"]
     })
     .then(materias => res.send(materias))
     .catch(() => res.sendStatus(500));
 });
 
+
+router.get("/data", (req, res) => {
+  const { query: { skip = 0, limit = 1 } } = req;
+  models.materia
+    .findAll({
+      attributes: ["id", "nombre", "id_carrera", "id_profesor"],
+      include: [/*{
+        model: models.carrera, attributes: ["id", "nombre"]
+      },*/
+      {
+        model: models.profesor, attributes: ["id", "nombre"]
+      }],
+      offset: Number(skip),
+      limit: Number(limit)
+    })
+    .then((carreras) => models.carrera.count()
+      .then((count) => ({
+        totalDeCarreras: count,
+        skip: Number(skip),
+        limit: Number(limit),
+        carreras
+      }))
+    )
+    .then((carrerasData) => res.send(carrerasData))
+    .catch((err) => res.sendStatus(500));
+});
+
+
 router.post("/", (req, res) => {
+  console.log(req.body);
   models.materia
     .create({
       nombre: req.body.nombre,
-      id_carrera: req.body.id_carrera
+      id_carrera: req.body.id_carrera,
+      id_profesor: req.body.id_profesor
     })
     .then(materia => res.status(201).send({ id: materia.id }))
     .catch(error => {
@@ -32,7 +62,7 @@ router.post("/", (req, res) => {
 const findMateria = (id, { onSuccess, onNotFound, onError }) => {
   models.materia
     .findOne({
-      attributes: ["id", "nombre", "id_carrera"],
+      attributes: ["id", "nombre", "id_carrera", "id_profesor"],
       where: { id }
     })
     .then(materia => (materia ? onSuccess(materia) : onNotFound()))
@@ -80,5 +110,7 @@ router.delete("/:id", (req, res) => {
       onError: () => res.sendStatus(500)
     });
 });
+
+
 
 module.exports = router;
