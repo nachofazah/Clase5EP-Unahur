@@ -3,7 +3,6 @@ var router = express.Router();
 var models = require("../models");
 
 router.get("/", (req, res) => {
-  console.log("Esto es un mensaje para ver en consola");
   models.carrera
     .findAll({
       attributes: ["id", "nombre"]
@@ -13,6 +12,29 @@ router.get("/", (req, res) => {
       console.log(err);
       res.sendStatus(500)
     });
+});
+
+router.get("/materias", (req, res) => {
+  const { query: { skip = 0, limit = 1 } } = req;
+  models.carrera
+    .findAll({
+      attributes: ["id", "nombre"],
+      include: [{
+        model: models.materia, attributes: ["id", "nombre", "id_carrera"]
+      }],
+      offset: Number(skip),
+      limit: Number(limit)
+    })
+    .then((carreras) => models.carrera.count()
+      .then((count) => ({
+        totalDeCarreras: count,
+        skip: Number(skip),
+        limit: Number(limit),
+        carreras
+      }))
+    )
+    .then((carrerasData) => res.send(carrerasData))
+    .catch(() => res.sendStatus(500));
 });
 
 router.post("/", (req, res) => {
