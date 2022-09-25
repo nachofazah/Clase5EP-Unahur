@@ -32,7 +32,7 @@ router.post("/", (req, res) => {
     });
 });
 
-const findcomision = (id, { onSuccess, onNotFound, onError }) => {
+const findComision = (id, { onSuccess, onNotFound, onError }) => {
   models.comision
     .findOne({
       attributes: ["id", "nombre", "id_materia"],
@@ -43,7 +43,7 @@ const findcomision = (id, { onSuccess, onNotFound, onError }) => {
 };
 
 router.get("/:id", (req, res) => {
-  findcomision(req.params.id, {
+  findComision(req.params.id, {
     onSuccess: comision => res.send(comision),
     onNotFound: () => res.sendStatus(404),
     onError: (error) => {
@@ -67,7 +67,7 @@ router.put("/:id", (req, res) => {
           res.sendStatus(500)
         }
       });
-    findcomision(req.params.id, {
+    findComision(req.params.id, {
       onSuccess,
       onNotFound: () => res.sendStatus(404),
       onError: (error) => {
