@@ -17,11 +17,12 @@ router.get("/data", (req, res) => {
   models.materia
     .findAll({
       attributes: ["id", "nombre", "id_carrera", "id_profesor"],
-      include: [/*{
+      include: [{
         model: models.carrera, attributes: ["id", "nombre"]
-      },*/
-      {
+      },{
         model: models.profesor, attributes: ["id", "nombre"]
+      },{
+        model: models.comision, attributes: ["id", "nombre"]
       }],
       offset: Number(skip),
       limit: Number(limit)
