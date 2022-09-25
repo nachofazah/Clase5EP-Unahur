@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
   materia.associate = (models) => {
     materia.belongsTo(models.profesor, { foreignKey: 'id_profesor' });
     materia.belongsTo(models.carrera, { foreignKey: 'id_carrera' });
+    materia.hasMany(models.comision, {foreingkey: 'id_materia'});
   }
-
+  
   return materia;
 };
