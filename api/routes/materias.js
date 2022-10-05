@@ -8,19 +8,21 @@ router.get("/", (req, res) => {
       attributes: ["id", "nombre", "id_carrera", "id_profesor"]
     })
     .then(materias => res.send(materias))
-    .catch(() => res.sendStatus(500));
+    .catch((error) => {
+      console.error(error)
+      res.sendStatus(500)
+    });
 });
 
 
-router.get("/data", (req, res) => {
-  const { query: { skip = 0, limit = 1 } } = req;
+router.get("/info", (req, res) => {
+  const { query: { skip = 0, limit = 10 } } = req;
   models.materia
     .findAll({
       attributes: ["id", "nombre", "id_carrera", "id_profesor"],
-      include: [/*{
+      include: [{
         model: models.carrera, attributes: ["id", "nombre"]
-      },*/
-      {
+      },{
         model: models.profesor, attributes: ["id", "nombre"]
       }],
       offset: Number(skip),
@@ -35,12 +37,14 @@ router.get("/data", (req, res) => {
       }))
     )
     .then((carrerasData) => res.send(carrerasData))
-    .catch((err) => res.sendStatus(500));
+    .catch((error) => {
+      console.error(error)
+      res.sendStatus(500)
+    });
 });
 
 
 router.post("/", (req, res) => {
-  console.log(req.body);
   models.materia
     .create({
       nombre: req.body.nombre,
@@ -66,14 +70,17 @@ const findMateria = (id, { onSuccess, onNotFound, onError }) => {
       where: { id }
     })
     .then(materia => (materia ? onSuccess(materia) : onNotFound()))
-    .catch(() => onError());
+    .catch((error) => onError(error));
 };
 
 router.get("/:id", (req, res) => {
   findMateria(req.params.id, {
     onSuccess: materia => res.send(materia),
     onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
+    onError: (error) => {
+      console.error(error)
+      res.sendStatus(500)
+    }
   });
 });
 
@@ -94,7 +101,10 @@ router.put("/:id", (req, res) => {
     findMateria(req.params.id, {
       onSuccess,
       onNotFound: () => res.sendStatus(404),
-      onError: () => res.sendStatus(500)
+      onError: (error) => {
+        console.error(error)
+        res.sendStatus(500)
+      }
     });
 });
 
@@ -107,7 +117,10 @@ router.delete("/:id", (req, res) => {
     findMateria(req.params.id, {
       onSuccess,
       onNotFound: () => res.sendStatus(404),
-      onError: () => res.sendStatus(500)
+      onError: (error) => {
+        console.error(error)
+        res.sendStatus(500)
+      }
     });
 });
 

@@ -3,14 +3,39 @@ var router = express.Router();
 var models = require("../models");
 
 router.get("/", (req, res) => {
-  console.log("Esto es un mensaje para ver en consola");
   models.carrera
     .findAll({
       attributes: ["id", "nombre"]
     })
     .then(carreras => res.send(carreras))
-    .catch((err) => {
-      console.log(err);
+    .catch((error) => {
+      console.error(error);
+      res.sendStatus(500)
+    });
+});
+
+router.get("/materias", (req, res) => {
+  const { query: { skip = 0, limit = 1 } } = req;
+  models.carrera
+    .findAll({
+      attributes: ["id", "nombre"],
+      include: [{
+        model: models.materia, attributes: ["id", "nombre", "id_carrera"]
+      }],
+      offset: Number(skip),
+      limit: Number(limit)
+    })
+    .then((carreras) => models.carrera.count()
+      .then((count) => ({
+        totalDeCarreras: count,
+        skip: Number(skip),
+        limit: Number(limit),
+        carreras
+      }))
+    )
+    .then((carrerasData) => res.send(carrerasData))
+    .catch((error) => {
+      console.error(error)
       res.sendStatus(500)
     });
 });
@@ -37,14 +62,17 @@ const findCarrera = (id, { onSuccess, onNotFound, onError }) => {
       where: { id }
     })
     .then(carrera => (carrera ? onSuccess(carrera) : onNotFound()))
-    .catch(() => onError());
+    .catch((error) => onError(error));
 };
 
 router.get("/:id", (req, res) => {
   findCarrera(req.params.id, {
     onSuccess: carrera => res.send(carrera),
     onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
+    onError: (error) => {
+      console.error(error)
+      res.sendStatus(500)
+    }
   });
 });
 
@@ -65,7 +93,10 @@ router.put("/:id", (req, res) => {
     findCarrera(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
+    onError: (error) => {
+      console.error(error)
+      res.sendStatus(500)
+    }
   });
 });
 
@@ -78,7 +109,10 @@ router.delete("/:id", (req, res) => {
   findCarrera(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
+    onError: (error) => {
+      console.error(error)
+      res.sendStatus(500)
+    }
   });
 });
 
