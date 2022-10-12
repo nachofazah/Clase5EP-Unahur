@@ -60,9 +60,9 @@ router.post("/", (req, res) => {
     .then(carrera => res.status(201).send({ id: carrera.id }))
     .catch(error => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {
-        return { message: 'Bad request: existe otra carrera con el mismo nombre', status: 400 };
+        throw { message: 'Bad request: existe otra carrera con el mismo nombre', status: 400 };
       }
-      return error;
+      throw error;
     })
     .catch(error => {
       utils.errorControl(req, res, {
@@ -106,17 +106,9 @@ router.put("/:id", (req, res) => {
       .then(() => res.sendStatus(200))
       .catch(error => {
         if (error == "SequelizeUniqueConstraintError: Validation error") {
-          return { message: 'Bad request: existe otra carrera con el mismo nombre', status: 400 };
+          throw { message: 'Bad request: existe otra carrera con el mismo nombre', status: 400 };
         }
-        return error;
-      })
-      .catch(error => {
-        utils.errorControl(req, res, {
-          service: 'Edicion de una carrera',
-          feature: 'Carreras',
-          message: error.message || `Error al intentar actualizar la base de datos: ${error}`,
-          status: error.status || 500
-        });
+        throw error;
       });
     findCarrera(req.params.id, {
       onSuccess,
@@ -136,15 +128,7 @@ router.delete("/:id", (req, res) => {
   const onSuccess = carrera =>
     carrera
       .destroy()
-      .then(() => res.sendStatus(200))
-      .catch(error => {
-        utils.errorControl(req, res, {
-          service: 'Eliminacion de una carrera',
-          feature: 'Carreras',
-          message: error.message || `Error al intentar actualizar la base de datos: ${error}`,
-          status: error.status || 500
-        });
-      });
+      .then(() => res.sendStatus(200));
   findCarrera(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
