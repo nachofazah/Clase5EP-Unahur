@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     id_materia: DataTypes.INTEGER
   }, {});
   contenido.associate = function(models) {
-    // associations can be defined here
+    contenido.belongsTo(models.materia, {foreingkey: 'id_materia'});
   };
   return contenido;
 };
