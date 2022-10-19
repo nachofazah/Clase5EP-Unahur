@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var HealthCheckRouter = require('./health');
 var carrerasRouter = require('./routes/carreras');
 var materiasRouter = require('./routes/materias');
 var comisionRouter = require('./routes/comision');
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/health', HealthCheckRouter);
 
 app.use('/carreras', carrerasRouter);
 app.use('/materias', materiasRouter);
