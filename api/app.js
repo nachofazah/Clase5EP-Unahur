@@ -7,6 +7,7 @@ var carrerasRouter = require('./routes/carreras');
 var materiasRouter = require('./routes/materias');
 var comisionRouter = require('./routes/comision');
 var profesorRouter = require('./routes/profesor');
+var { cacheInit } = require('./middleware');
 
 
 var app = express();
@@ -20,7 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(cacheInit);
 
 app.use('/carreras', carrerasRouter);
 app.use('/materias', materiasRouter);
