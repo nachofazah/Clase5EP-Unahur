@@ -14,6 +14,23 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/contenidos", (req, res) => {
+  models.contenido
+  .findAll({
+    attributes: ["id", "nombre", "id_materia"]
+  })
+  .then(contenidos => res.send(contenidos))
+  .catch(() => res.sendStatus(500));
+});
+
+router.get("/comisiones", (req, res) => {
+      models.comisiones
+      .findAll({
+        attributes: ["id", "nombre", "id_materia"]
+      })
+      .then(comisiones => res.send(comisiones))
+      .catch(() => res.sendStatus(500));
+  });
 
 router.get("/info", (req, res) => {
   const { query: { skip = 0, limit = 10 } } = req;
