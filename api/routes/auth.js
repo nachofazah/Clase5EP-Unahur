@@ -1,7 +1,7 @@
-var express = require("express");
+const express = require("express");
 const url = require('url');
 const axios = require('axios');
-var router = express.Router();
+const router = express.Router();
 
 router.post("/register", (req, res) => {
   const { email, password } = req.body;

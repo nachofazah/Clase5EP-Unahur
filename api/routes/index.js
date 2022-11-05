@@ -1,10 +1,10 @@
-var authRouter = require('./auth');
-var carrerasRouter = require('./carreras');
-var materiasRouter = require('./materias');
-var comisionRouter = require('./comision');
-var profesorRouter = require('./profesor');
-var alumnoRouter = require('./alumno');
-var contenidosRouter = require('./contenidos');
+const authRouter = require('./auth');
+const carrerasRouter = require('./carreras');
+const materiasRouter = require('./materias');
+const comisionRouter = require('./comision');
+const profesorRouter = require('./profesor');
+const alumnoRouter = require('./alumno');
+const contenidosRouter = require('./contenidos');
 
 module.exports = {
   authRouter,
