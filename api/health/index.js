@@ -1,10 +1,12 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
+const db = require('../models')
 
 router.get('/', (req, res) => {
   const healthcheck = {
     uptime: process.uptime(),
     responseTime: process.hrtime(),
+    dbStatus: db.sequelize.authenticate(),
     message: 'OK',
     timestamp: Date.now()
   };
