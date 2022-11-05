@@ -1,7 +1,7 @@
 const getExpeditiousCache = require('express-expeditious');
 
 const defaultOptions = {
-    namespace: 'epersistencias_cache',
+    namespace: 'EPersistenciasCache',
     defaultTtl: '1 minute',
     statusCodeExpires: {
         404: '5 minutes',
@@ -9,10 +9,6 @@ const defaultOptions = {
     }
 };
 
-// const cacheMiddleware = getExpeditiousCache(defaultOptions);
-const cacheMiddleware = (req, res, next) => {
-  console.log('en cacheMiddleware')
-  next()
-};
+const cacheMiddleware = getExpeditiousCache(defaultOptions);
 
 module.exports = cacheMiddleware;
