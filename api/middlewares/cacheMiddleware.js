@@ -9,6 +9,10 @@ const defaultOptions = {
     }
 };
 
-const cacheInit = getExpeditiousCache(defaultOptions);
+// const cacheMiddleware = getExpeditiousCache(defaultOptions);
+const cacheMiddleware = (req, res, next) => {
+  console.log('en cacheMiddleware')
+  next()
+};
 
-module.exports = { cacheInit };
+module.exports = cacheMiddleware;
