@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     nombre: DataTypes.STRING
   }, {});
   alumno.associate = (models) => {
-    // alumno.hasMany(models.comisionAlumno, { foreignKey: 'id_alumno', as: 'comisionesDeAlumnoDeAlumno' });
+    alumno.hasMany(models.comisionAlumno, { foreignKey: 'id_alumno' });
   };
   return alumno;
 };

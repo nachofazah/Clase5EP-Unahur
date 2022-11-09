@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   comision.associate = (models) => {
-    comision.belongsTo(models.materia, { foreignKey: 'id_materia', as: 'comisionesDeMateria' });
-    // comision.hasMany(models.comisionAlumno, { foreignKey: 'id_comision', as: 'comisionesDeAlumnoDeComision' });
+    comision.belongsTo(models.materia, { foreignKey: 'id_materia' });
+    comision.hasMany(models.comisionAlumno, { foreignKey: 'id_comision' });
   }
   
   return comision;

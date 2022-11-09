@@ -41,9 +41,9 @@ router.get("/info", (req, res) => {
     .findAll({
       attributes: ["id", "nombre", "id_carrera", "id_profesor"],
       include: [{
-        model: models.carrera, attributes: ["id", "nombre"], as: 'materiasDeCarrera'
+        model: models.carrera, attributes: ["id", "nombre"]
       },{
-        model: models.profesor, attributes: ["id", "nombre"], as: 'materiasDeProfesor'
+        model: models.profesor, attributes: ["id", "nombre"]
       }/* ,{
         model: models.comision, attributes: ["id", "nombre"], as: 'comisionesDeMateria'
       } */],
