@@ -19,6 +19,8 @@ const {
   contenidosRouter
 } = require('./routes');
 
+const HealthCheckRouter = require('./health');
+
 const app = express();
 
 // view engine setup
@@ -35,6 +37,8 @@ app.use(cacheMiddleware);
 app.use('/auth', authRouter);
 
 app.use(validateTokenMiddleware);
+
+app.use('/health', HealthCheckRouter);
 
 app.use('/carreras', carrerasRouter);
 app.use('/materias', materiasRouter);
