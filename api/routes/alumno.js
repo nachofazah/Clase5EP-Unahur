@@ -3,7 +3,6 @@ const router = express.Router();
 const models = require("../models");
 
 router.get("/", (req, res) => {
-  console.log("Esto es un mensaje para ver en consola");
   models.alumno
     .findAll({
       attributes: ["id", "nombre"]

@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/register", (req, res) => {
   const { email, password } = req.body;
-  const request = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.FIREBASE_API_KEY}`
+  const request = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.FIREBASE_API_KEY}`;
   const data = {
     email,
     password,
@@ -26,7 +26,7 @@ router.post("/register", (req, res) => {
 
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
-  const request = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.FIREBASE_API_KEY}`
+  const request = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.FIREBASE_API_KEY}`;
   const data = {
     email,
     password,
@@ -47,7 +47,7 @@ router.post("/login", (req, res) => {
 
 router.post("/refresh-token", (req, res) => {
   const { refreshToken } = req.body;
-  const request = `https://securetoken.googleapis.com/v1/token?key=${process.env.FIREBASE_API_KEY}`
+  const request = `https://securetoken.googleapis.com/v1/token?key=${process.env.FIREBASE_API_KEY}`;
   const params = new url.URLSearchParams({
     grant_type: 'refresh_token',
     refresh_token: refreshToken

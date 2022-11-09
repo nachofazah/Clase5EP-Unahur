@@ -34,11 +34,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cacheMiddleware);
 
+app.use('/health', HealthCheckRouter);
 app.use('/auth', authRouter);
 
+// Validate token
 app.use(validateTokenMiddleware);
-
-app.use('/health', HealthCheckRouter);
 
 app.use('/carreras', carrerasRouter);
 app.use('/materias', materiasRouter);
