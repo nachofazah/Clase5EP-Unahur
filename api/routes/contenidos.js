@@ -1,35 +1,49 @@
 const express = require("express");
 const router = express.Router();
 const models = require("../models");
+const utils = require("../utils");
 const contenido = require("../models/contenido");
 
 router.get("/", (req, res) => {
   models.contenido
     .findAll({
-      attributes: ["id", "id_materia", "nombre"]
+      attributes: ["id", "nombre", "id_materia"]
     })
-    .then(contenidos => res.send(contenidos))
-    .catch((err) => {
-      console.log(err);
-      res.sendStatus(500)
+    .then(contenido => {
+      if (!contenido.length) {
+        throw { message: 'No hay contenido', status: 204 };
+      }
+      res.send(contenido)
+    })
+    .catch(error => {
+      utils.errorControl(req, res, {
+        service: 'Obtener contenidos',
+        feature: 'Contenido',
+        message: error.message || 'No se encuentran contenidos',
+        status: error.status || 500
+      });
     });
 });
-
 
 router.post("/", (req, res) => {
   models.contenido
     .create({ 
-        id_materia: req.body.id_materia,
-        nombre: req.body.nombre })
+      nombre: req.body.nombre,
+      id_materia: req.body.id_materia })
     .then(contenido => res.status(201).send({ id: contenido.id }))
     .catch(error => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {
-        res.status(400).send('Bad request: existe contenido con el mismo nombre')
+        throw { message: 'Bad request: existe otro contenido con el mismo nombre', status: 400 };
       }
-      else {
-        console.log(`Error al intentar insertar en la base de datos: ${error}`)
-        res.sendStatus(500)
-      }
+      throw error;
+    })
+    .catch(error => {
+      utils.errorControl(req, res, {
+        service: 'Creacion de un contenido',
+        feature: 'Contenido',
+        message: error.message || `Error al intentar insertar en la base de datos: ${error}`,
+        status: error.status || 500
+      });
     });
 });
 
@@ -47,7 +61,14 @@ router.get("/:id", (req, res) => {
     findContenido(req.params.id, {
     onSuccess: contenidos => res.send(contenidos),
     onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
+    onError: (error) => {
+      utils.errorControl(req, res, {
+        service: 'Obtencion de un contenido',
+        feature: 'Contenido',
+        message: error.message || 'No se encuentra el contenido',
+        status: error.status || 500
+      });
+    }
   });
 });
 
@@ -58,17 +79,21 @@ router.put("/:id", (req, res) => {
       .then(() => res.sendStatus(200))
       .catch(error => {
         if (error == "SequelizeUniqueConstraintError: Validation error") {
-          res.status(400).send('Bad request: existen otros contenidos con el mismo nombre')
+          throw { message: 'Bad request: existe otra carrera con el mismo nombre', status: 400 };
         }
-        else {
-          console.log(`Error al intentar actualizar la base de datos: ${error}`)
-          res.sendStatus(500)
-        }
+        throw error;
       });
-    findContenido(req.params.id, {
+  findComision(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
+    onError: (error) => {
+      utils.errorControl(req, res, {
+        service: 'Edicion de un contenido',
+        feature: 'Contenido',
+        message: error.message || `Error al intentar actualizar la base de datos: ${error}`,
+        status: error.status || 500
+      });
+    }
   });
 });
 
@@ -81,7 +106,14 @@ router.delete("/:id", (req, res) => {
   findContenido(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
+    onError: (error) => {
+      utils.errorControl(req, res, {
+        service: 'Eliminacion de un contenido',
+        feature: 'Contenidos',
+        message: error.message || `Error al intentar actualizar la base de datos: ${error}`,
+        status: error.status || 500
+      });
+    }
   });
 });
 
