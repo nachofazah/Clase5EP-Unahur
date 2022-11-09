@@ -1,7 +1,7 @@
-var express = require("express");
-var router = express.Router();
-var models = require("../models");
-var utils = require("../utils");
+const express = require("express");
+const router = express.Router();
+const models = require("../models");
+const utils = require("../utils");
 
 router.get("/", (req, res) => {
   models.comision

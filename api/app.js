@@ -1,17 +1,27 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var { cacheInit } = require('./middleware');
-var carrerasRouter = require('./routes/carreras');
-var materiasRouter = require('./routes/materias');
-var comisionRouter = require('./routes/comision');
-var profesorRouter = require('./routes/profesor');
-var contenidosRouter = require('./routes/contenidos');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
+const {
+  cacheMiddleware,
+  validateTokenMiddleware
+} = require('./middlewares');
 
-var app = express();
+const {
+  authRouter,
+  carrerasRouter,
+  materiasRouter,
+  comisionRouter,
+  profesorRouter,
+  alumnoRouter,
+  contenidosRouter
+} = require('./routes');
+
+const HealthCheckRouter = require('./health');
+
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,12 +32,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cacheInit);
+app.use(cacheMiddleware);
+
+app.use('/auth', authRouter);
+
+app.use(validateTokenMiddleware);
+
+app.use('/health', HealthCheckRouter);
 
 app.use('/carreras', carrerasRouter);
 app.use('/materias', materiasRouter);
 app.use('/comision', comisionRouter);
 app.use('/profesor', profesorRouter);
+app.use('/alumno', alumnoRouter);
 app.use('/contenidos', contenidosRouter);
 
 // catch 404 and forward to error handler

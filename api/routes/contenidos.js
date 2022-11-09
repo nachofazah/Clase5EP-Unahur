@@ -1,7 +1,8 @@
-var express = require("express");
-var router = express.Router();
-var models = require("../models");
-var utils = require("../utils");
+const express = require("express");
+const router = express.Router();
+const models = require("../models");
+const utils = require("../utils");
+const contenido = require("../models/contenido");
 
 router.get("/", (req, res) => {
   models.contenido
