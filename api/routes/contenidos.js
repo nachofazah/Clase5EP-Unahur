@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const models = require("../models");
-const utils = require("../utils");
-const contenido = require("../models/contenido");
+const { errorControl } = require("../utils");
 
 router.get("/", (req, res) => {
   models.contenido
@@ -16,7 +15,7 @@ router.get("/", (req, res) => {
       res.send(contenido)
     })
     .catch(error => {
-      utils.errorControl(req, res, {
+      errorControl(req, res, {
         service: 'Obtener contenidos',
         feature: 'Contenido',
         message: error.message || 'No se encuentran contenidos',
@@ -38,7 +37,7 @@ router.post("/", (req, res) => {
       throw error;
     })
     .catch(error => {
-      utils.errorControl(req, res, {
+      errorControl(req, res, {
         service: 'Creacion de un contenido',
         feature: 'Contenido',
         message: error.message || `Error al intentar insertar en la base de datos: ${error}`,
@@ -62,7 +61,7 @@ router.get("/:id", (req, res) => {
     onSuccess: contenidos => res.send(contenidos),
     onNotFound: () => res.sendStatus(404),
     onError: (error) => {
-      utils.errorControl(req, res, {
+      errorControl(req, res, {
         service: 'Obtencion de un contenido',
         feature: 'Contenido',
         message: error.message || 'No se encuentra el contenido',
@@ -87,7 +86,7 @@ router.put("/:id", (req, res) => {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
     onError: (error) => {
-      utils.errorControl(req, res, {
+      errorControl(req, res, {
         service: 'Edicion de un contenido',
         feature: 'Contenido',
         message: error.message || `Error al intentar actualizar la base de datos: ${error}`,
@@ -107,7 +106,7 @@ router.delete("/:id", (req, res) => {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
     onError: (error) => {
-      utils.errorControl(req, res, {
+      errorControl(req, res, {
         service: 'Eliminacion de un contenido',
         feature: 'Contenidos',
         message: error.message || `Error al intentar actualizar la base de datos: ${error}`,

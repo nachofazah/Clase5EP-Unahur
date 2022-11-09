@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require('axios');
 
 const validateTokenMiddleware = (req, res, next) => {
   const token = req.headers.authorization;

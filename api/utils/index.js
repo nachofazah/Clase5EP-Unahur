@@ -1,12 +1,7 @@
-const errorControl = (req, res, error) => {
-  console.error(`ERROR ${error.service} - ${error.feature}: ${error.message} | ${error.status}`);
-  res.status(error.status).send({
-    method: req.method,
-    path: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
-    ...error
-  });
-};
+const errorControl = require('./errorControl');
+const sendWhatsappMessage = require('./sendWhatsappMessage');
 
 module.exports = {
-  errorControl
+  errorControl,
+  sendWhatsappMessage
 };

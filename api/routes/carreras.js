@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const models = require("../models");
-const utils = require("../utils");
+const { errorControl } = require("../utils");
 
 router.get("/", (req, res) => {
   models.carrera
@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
       res.send(carreras)
     })
     .catch(error => {
-      utils.errorControl(req, res, {
+      errorControl(req, res, {
         service: 'Obtener carreras',
         feature: 'Carreras',
         message: error.message || 'No se encuentran carreras',
@@ -45,7 +45,7 @@ router.get("/materias", (req, res) => {
     )
     .then((carrerasData) => res.send(carrerasData))
     .catch(error => {
-      utils.errorControl(req, res, {
+      errorControl(req, res, {
         service: 'Obtener materias de carreras',
         feature: 'Carreras',
         message: error.message || 'No se encuentran materias de carreras',
@@ -65,7 +65,7 @@ router.post("/", (req, res) => {
       throw error;
     })
     .catch(error => {
-      utils.errorControl(req, res, {
+      errorControl(req, res, {
         service: 'Creacion de una carrera',
         feature: 'Carreras',
         message: error.message || `Error al intentar insertar en la base de datos: ${error}`,
@@ -89,7 +89,7 @@ router.get("/:id", (req, res) => {
     onSuccess: carrera => res.send(carrera),
     onNotFound: () => res.sendStatus(404),
     onError: (error) => {
-      utils.errorControl(req, res, {
+      errorControl(req, res, {
         service: 'Obtencion de una carrera',
         feature: 'Carreras',
         message: error.message || 'No se encuentra la carrera',
@@ -114,7 +114,7 @@ router.put("/:id", (req, res) => {
       onSuccess,
       onNotFound: () => res.sendStatus(404),
       onError: (error) => {
-        utils.errorControl(req, res, {
+        errorControl(req, res, {
           service: 'Edicion de una carrera',
           feature: 'Carreras',
           message: error.message || `Error al intentar actualizar la base de datos: ${error}`,
@@ -133,7 +133,7 @@ router.delete("/:id", (req, res) => {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
     onError: (error) => {
-      utils.errorControl(req, res, {
+      errorControl(req, res, {
         service: 'Eliminacion de una carrera',
         feature: 'Carreras',
         message: error.message || `Error al intentar actualizar la base de datos: ${error}`,

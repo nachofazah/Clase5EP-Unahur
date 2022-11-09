@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const models = require("../models");
-const utils = require("../utils");
+const { errorControl } = require("../utils");
 
 router.get("/", (req, res) => {
   models.comision
@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
       res.send(comision)
     })
     .catch(error => {
-      utils.errorControl(req, res, {
+      errorControl(req, res, {
         service: 'Obtener comisiones',
         feature: 'Comisiones',
         message: error.message || 'No se encuentran comisiones',
@@ -37,7 +37,7 @@ router.post("/", (req, res) => {
       throw error;
     })
     .catch(error => {
-      utils.errorControl(req, res, {
+      errorControl(req, res, {
         service: 'Creacion de una comision',
         feature: 'Comision',
         message: error.message || `Error al intentar insertar en la base de datos: ${error}`,
@@ -61,7 +61,7 @@ router.get("/:id", (req, res) => {
     onSuccess: comision => res.send(comision),
     onNotFound: () => res.sendStatus(404),
     onError: (error) => {
-      utils.errorControl(req, res, {
+      errorControl(req, res, {
         service: 'Obtencion de una comision',
         feature: 'Comision',
         message: error.message || 'No se encuentra la comision',
@@ -86,7 +86,7 @@ router.put("/:id", (req, res) => {
       onSuccess,
       onNotFound: () => res.sendStatus(404),
       onError: (error) => {
-        utils.errorControl(req, res, {
+        errorControl(req, res, {
           service: 'Edicion de una comision',
           feature: 'Comision',
           message: error.message || `Error al intentar actualizar la base de datos: ${error}`,
@@ -106,7 +106,7 @@ router.delete("/:id", (req, res) => {
       onSuccess,
       onNotFound: () => res.sendStatus(404),
       onError: (error) => {
-        utils.errorControl(req, res, {
+        errorControl(req, res, {
           service: 'Eliminacion de una comision',
           feature: 'Comision',
           message: error.message || `Error al intentar actualizar la base de datos: ${error}`,
