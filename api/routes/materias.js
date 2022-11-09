@@ -16,20 +16,23 @@ router.get("/", (req, res) => {
 
 router.get("/contenidos", (req, res) => {
   models.contenido
-  .findAll({
-    attributes: ["id", "nombre", "id_materia"]
-  })
-  .then(contenidos => res.send(contenidos))
-  .catch(() => res.sendStatus(500));
+    .findAll({
+      attributes: ["id", "nombre", "id_materia"]
+    })
+    .then(contenidos => res.send(contenidos))
+    .catch(() => res.sendStatus(500));
 });
 
 router.get("/comisiones", (req, res) => {
-      models.comisiones
+    models.comision
       .findAll({
         attributes: ["id", "nombre", "id_materia"]
       })
       .then(comisiones => res.send(comisiones))
-      .catch(() => res.sendStatus(500));
+      .catch((error) => {
+        console.log(error)
+        res.sendStatus(500)
+      });
   });
 
 router.get("/info", (req, res) => {
@@ -38,10 +41,12 @@ router.get("/info", (req, res) => {
     .findAll({
       attributes: ["id", "nombre", "id_carrera", "id_profesor"],
       include: [{
-        model: models.carrera, attributes: ["id", "nombre"]
+        model: models.carrera, attributes: ["id", "nombre"], as: 'materiasDeCarrera'
       },{
-        model: models.profesor, attributes: ["id", "nombre"]
-      }],
+        model: models.profesor, attributes: ["id", "nombre"], as: 'materiasDeProfesor'
+      }/* ,{
+        model: models.comision, attributes: ["id", "nombre"], as: 'comisionesDeMateria'
+      } */],
       offset: Number(skip),
       limit: Number(limit)
     })
