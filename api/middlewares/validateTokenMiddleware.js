@@ -1,13 +1,16 @@
 const axios = require('axios');
 
-const validateTokenMiddleware = async (req, res, next) => {
+const validateTokenMiddleware = (req, res, next) => {
   try {
     const token = req.headers.authorization;
     const request = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.FIREBASE_API_KEY}`;
-    await axios.post(request, { idToken: token.substr(7) });
-    next();
+    axios.post(request, { idToken: token.substr(7) })
+      .then(next())
+      .catch(() => {
+        res.status(403).send({ message: 'invalid token' });
+      })
   } catch (error) {
-    res.status(403).send({ message: 'invalid token' });
+    res.status(500).send({ messege: 'error on validation middleware' });
   }
 }
 

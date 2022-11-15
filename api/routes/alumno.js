@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const models = require("../models");
+const { errorControl } = require("../utils");
 
 router.get("/", (req, res) => {
   models.alumno
@@ -11,6 +12,38 @@ router.get("/", (req, res) => {
     .catch((error) => {
       console.error(error)
       res.sendStatus(500)
+    });
+});
+
+router.get("/materias", (req, res) => {
+  const { query: { skip = 0, limit = 1 } } = req;
+  models.alumno
+    .findAll({
+      include: [{
+          model: models.comision,
+          include: [{
+            model: models.materia
+          }]
+      }],
+      offset: Number(skip),
+      limit: Number(limit)
+    })
+    .then((alumnos) => models.alumno.count()
+      .then((count) => ({
+        totalDeAlumnos: count,
+        skip: Number(skip),
+        limit: Number(limit),
+        alumnos
+      }))
+    )
+    .then((alumnosData) => res.send(alumnosData))
+    .catch(error => {
+      errorControl(req, res, {
+        service: 'Obtener materias de alumnos',
+        feature: 'Alumnos',
+        message: error.message || 'No se encuentran materias de alumnos',
+        status: error.status || 500
+      });
     });
 });
 
