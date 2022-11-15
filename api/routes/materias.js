@@ -44,9 +44,9 @@ router.get("/info", (req, res) => {
         model: models.carrera, attributes: ["id", "nombre"]
       },{
         model: models.profesor, attributes: ["id", "nombre"]
-      }/* ,{
-        model: models.comision, attributes: ["id", "nombre"], as: 'comisionesDeMateria'
-      } */],
+      },{
+        model: models.comision, attributes: ["id", "nombre"]
+      }],
       offset: Number(skip),
       limit: Number(limit)
     })
