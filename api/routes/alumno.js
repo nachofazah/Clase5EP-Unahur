@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const models = require("../models");
+const { sendWhatsappMessage } = require("../utils");
 
 router.get("/", (req, res) => {
   models.alumno
@@ -88,6 +89,18 @@ router.delete("/:id", (req, res) => {
       res.sendStatus(500)
     }
   });
+});
+
+router.post('/send-message/:phone', (req, res) => {
+  const { params: { phone }, body: { message } } = req;
+  sendWhatsappMessage(phone, message)
+    .then(() => {
+      res.status(200).send({ message: 'message sended' })
+    })
+    .catch(error => {
+      console.error('ERROR: send-message:', error);
+      res.status(200).send({ error });
+    });
 });
 
 module.exports = router;
